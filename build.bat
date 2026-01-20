@@ -1,9 +1,9 @@
 @echo off
-REM Sinistra Keys - Windows Build Script
+REM Sinistra Keys - Windows Build Script v3
 REM kidD Icarus / kidDicarus Inc.
 
 echo ========================================
-echo   SINISTRA KEYS - Build Script v2
+echo   SINISTRA KEYS - Build Script v3
 echo   kidD Icarus / kidDicarus Inc.
 echo ========================================
 echo.
@@ -19,7 +19,6 @@ if errorlevel 1 (
 echo [1/5] Cleaning old build files...
 if exist build rmdir /s /q build
 if exist dist rmdir /s /q dist
-if exist SinistraKeys.spec del SinistraKeys.spec
 
 echo.
 echo [2/5] Installing dependencies...
@@ -28,19 +27,27 @@ pip install python-rtmidi PyQt6 pyinstaller pillow
 echo.
 echo [3/5] Creating icon...
 python create_icon.py
+if not exist icon.ico (
+    echo WARNING: Icon creation failed, building without icon
+)
 
 echo.
-echo [4/5] Building standalone .exe...
+echo [4/5] Building standalone .exe using spec file...
 echo       (This takes 1-2 minutes, please wait)
-pyinstaller --noconfirm --onefile --windowed --icon=icon.ico --name=SinistraKeys sinistra_keys_v4.py
+echo.
+pyinstaller --noconfirm --clean SinistraKeys.spec
 
 echo.
 echo [5/5] Done!
 echo.
 if exist dist\SinistraKeys.exe (
-    echo SUCCESS: Your app is at dist\SinistraKeys.exe
+    echo ========================================
+    echo   SUCCESS!
+    echo   Your app is at: dist\SinistraKeys.exe
+    echo ========================================
     echo.
     echo You can copy SinistraKeys.exe anywhere and run it.
+    echo No console window should appear.
 ) else (
     echo ERROR: Build failed. Check the output above.
 )
