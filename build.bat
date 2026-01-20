@@ -1,9 +1,9 @@
 @echo off
 REM Sinistra Keys - Windows Build Script
-REM Run this in the sinistra-keys folder
+REM kidD Icarus / kidDicarus Inc.
 
 echo ========================================
-echo   Sinistra Keys - Build Script
+echo   SINISTRA KEYS - Build Script v2
 echo   kidD Icarus / kidDicarus Inc.
 echo ========================================
 echo.
@@ -16,23 +16,33 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo [1/4] Installing dependencies...
-pip install python-rtmidi PyQt6 pyinstaller pillow cairosvg
+echo [1/5] Cleaning old build files...
+if exist build rmdir /s /q build
+if exist dist rmdir /s /q dist
+if exist SinistraKeys.spec del SinistraKeys.spec
 
 echo.
-echo [2/4] Converting icon SVG to ICO...
-python convert_icon.py
+echo [2/5] Installing dependencies...
+pip install python-rtmidi PyQt6 pyinstaller pillow
 
 echo.
-echo [3/4] Building standalone .exe (this takes a minute)...
-REM --noconsole = no black console window
-REM --onefile = single .exe
-REM --icon = embeds the icon into the .exe
-pyinstaller --noconsole --onefile --icon=icon.ico --name=SinistraKeys sinistra_keys_v4.py
+echo [3/5] Creating icon...
+python create_icon.py
 
 echo.
-echo [4/4] Done!
+echo [4/5] Building standalone .exe...
+echo       (This takes 1-2 minutes, please wait)
+pyinstaller --noconfirm --onefile --windowed --icon=icon.ico --name=SinistraKeys sinistra_keys_v4.py
+
 echo.
-echo Your app is at: dist\SinistraKeys.exe
+echo [5/5] Done!
+echo.
+if exist dist\SinistraKeys.exe (
+    echo SUCCESS: Your app is at dist\SinistraKeys.exe
+    echo.
+    echo You can copy SinistraKeys.exe anywhere and run it.
+) else (
+    echo ERROR: Build failed. Check the output above.
+)
 echo.
 pause
