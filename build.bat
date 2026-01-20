@@ -17,16 +17,18 @@ if errorlevel 1 (
 )
 
 echo [1/4] Installing dependencies...
-pip install -r requirements.txt
-pip install pyinstaller pillow cairosvg
+pip install python-rtmidi PyQt6 pyinstaller pillow cairosvg
 
 echo.
 echo [2/4] Converting icon SVG to ICO...
 python convert_icon.py
 
 echo.
-echo [3/4] Building standalone .exe...
-pyinstaller sinistra_keys.spec --clean
+echo [3/4] Building standalone .exe (this takes a minute)...
+REM --noconsole = no black console window
+REM --onefile = single .exe
+REM --icon = embeds the icon into the .exe
+pyinstaller --noconsole --onefile --icon=icon.ico --name=SinistraKeys sinistra_keys_v4.py
 
 echo.
 echo [4/4] Done!
