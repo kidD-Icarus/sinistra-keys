@@ -1,49 +1,72 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a1a"/>
-      <stop offset="100%" style="stop-color:#0a0a0a"/>
+    <radialGradient id="bgEnhanced" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#2a2a2a"/>
+      <stop offset="60%" style="stop-color:#1a1a1a"/>
+      <stop offset="100%" style="stop-color:#050505"/>
+    </radialGradient>
+    <linearGradient id="crimsonEnhanced" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC143C"/>
+      <stop offset="50%" style="stop-color:#B22222"/>
+      <stop offset="100%" style="stop-color:#800000"/>
     </linearGradient>
-    <linearGradient id="crimson" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#B22222"/>
-      <stop offset="100%" style="stop-color:#8B0000"/>
+    <linearGradient id="goldEnhanced" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF700"/>
+      <stop offset="30%" style="stop-color:#FFD700"/>
+      <stop offset="70%" style="stop-color:#DAA520"/>
+      <stop offset="100%" style="stop-color:#B8860B"/>
     </linearGradient>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFD700"/>
-      <stop offset="100%" style="stop-color:#DAA520"/>
-    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="bevel">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur"/>
+      <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.5" specularExponent="10" result="specular" lighting-color="#ffffff">
+        <fePointLight x="150" y="150" z="300"/>
+      </feSpecularLighting>
+      <feComposite in="specular" in2="SourceAlpha" operator="in" result="composite"/>
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="composite"/>
+      </feMerge>
+    </filter>
   </defs>
-  
-  <!-- Background circle -->
-  <circle cx="256" cy="256" r="250" fill="url(#bg)" stroke="url(#crimson)" stroke-width="8"/>
-  
-  <!-- RTL Arrow (left pointing) -->
+
+  <!-- Background circle with glow -->
+  <circle cx="256" cy="256" r="250" fill="url(#bgEnhanced)" stroke="url(#crimsonEnhanced)" stroke-width="10" filter="url(#glow)"/>
+
+  <!-- RTL Arrow with bevel -->
   <path d="M 120 256 L 200 186 L 200 226 L 350 226 L 350 286 L 200 286 L 200 326 Z" 
-        fill="url(#crimson)" opacity="0.9"/>
-  
-  <!-- Piano keys silhouette at bottom -->
-  <g transform="translate(106, 320)">
+        fill="url(#crimsonEnhanced)" opacity="0.9" filter="url(#bevel)"/>
+
+  <!-- Piano keys with bevel -->
+  <g transform="translate(106, 320)" filter="url(#bevel)">
     <!-- White keys -->
-    <rect x="0" y="0" width="40" height="80" fill="#E0E0E0" rx="4"/>
-    <rect x="50" y="0" width="40" height="80" fill="#E0E0E0" rx="4"/>
-    <rect x="100" y="0" width="40" height="80" fill="#E0E0E0" rx="4"/>
-    <rect x="150" y="0" width="40" height="80" fill="#E0E0E0" rx="4"/>
-    <rect x="200" y="0" width="40" height="80" fill="#E0E0E0" rx="4"/>
-    <rect x="250" y="0" width="40" height="80" fill="#E0E0E0" rx="4"/>
+    <rect x="0" y="0" width="40" height="80" fill="#F8F8F8" rx="4"/>
+    <rect x="50" y="0" width="40" height="80" fill="#F8F8F8" rx="4"/>
+    <rect x="100" y="0" width="40" height="80" fill="#F8F8F8" rx="4"/>
+    <rect x="150" y="0" width="40" height="80" fill="#F8F8F8" rx="4"/>
+    <rect x="200" y="0" width="40" height="80" fill="#F8F8F8" rx="4"/>
+    <rect x="250" y="0" width="40" height="80" fill="#F8F8F8" rx="4"/>
     <!-- Black keys -->
     <rect x="28" y="0" width="24" height="50" fill="#1a1a1a" rx="2"/>
     <rect x="78" y="0" width="24" height="50" fill="#1a1a1a" rx="2"/>
     <rect x="178" y="0" width="24" height="50" fill="#1a1a1a" rx="2"/>
     <rect x="228" y="0" width="24" height="50" fill="#1a1a1a" rx="2"/>
   </g>
-  
-  <!-- k.I. text -->
+
+  <!-- k.I. text with bevel and stroke -->
   <text x="256" y="180" font-family="Arial Black, Arial, sans-serif" font-size="120" font-weight="bold" 
-        fill="url(#gold)" text-anchor="middle" dominant-baseline="middle">k.I.</text>
-  
-  <!-- SINISTRA text arc at top -->
-  <path id="textArc" d="M 80 256 A 176 176 0 0 1 432 256" fill="none"/>
-  <text font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#gold)" letter-spacing="8">
-    <textPath href="#textArc" startOffset="50%" text-anchor="middle">SINISTRA</textPath>
+        fill="url(#goldEnhanced)" text-anchor="middle" dominant-baseline="middle" 
+        filter="url(#bevel)" stroke="#B8860B" stroke-width="1.5">k.I.</text>
+
+  <!-- SINISTRA text arc with glow -->
+  <path id="textArcEnhanced" d="M 80 256 A 176 176 0 0 1 432 256" fill="none"/>
+  <text font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#goldEnhanced)" letter-spacing="8" filter="url(#glow)">
+    <textPath href="#textArcEnhanced" startOffset="50%" text-anchor="middle">SINISTRA</textPath>
   </text>
 </svg>
